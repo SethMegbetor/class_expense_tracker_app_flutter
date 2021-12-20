@@ -1,5 +1,8 @@
+// ignore_for_file: deprecated_member_use
+
 import './transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(MyApp());
@@ -38,7 +41,7 @@ class MyHomePage extends StatelessWidget {
           title: const Text('Expense Planner'),
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
@@ -49,10 +52,68 @@ class MyHomePage extends StatelessWidget {
                 color: Colors.green,
               ),
             ),
+            Card(
+              child: Column(children: [
+                const TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Title',
+                  ),
+                ),
+                const TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Amount',
+                  ),
+                ),
+                FlatButton(
+                  child: const Text('Add Transaction'),
+                  textColor: Colors.purple,
+                  onPressed: () {},
+                )
+              ]),
+            ),
             Column(
-              children: transactions.map((tx){
-                return Card(child: Text(tx.title),);
-              }).toList() ,
+              children: transactions.map((tx) {
+                return Card(
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 15,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.purple,
+                            width: 2,
+                          ),
+                        ),
+                        child: Text(
+                          // '\$${tx.amount}', for the dollar sign
+                          'GH₵ ${tx.amount.toStringAsFixed(2)}', //for the GH₵
+                          style: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.purple,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            tx.title,
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            DateFormat.yMMMMd().format(tx.date),
+                            style: const TextStyle(
+                                fontSize: 12, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
             )
           ],
         ));
